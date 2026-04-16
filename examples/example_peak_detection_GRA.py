@@ -18,7 +18,7 @@ noise = 0.00 * (np.random.rand(len(y)) - 0.5)
 y = y - base + noise
 
 #Initialize chromatogram
-chrom = Chromatogram(y, None, x)
+chrom = Chromatogram(y, None, None, None, x, None)
 chrom.remove_blank()
 chrom.from_2D_to_1D()
 
@@ -26,6 +26,14 @@ chrom.from_2D_to_1D()
 chrom.correct_baseline()
 chrom.remove_noise()
 chrom.detect_peaks()
+
+fig, axs = plt.subplots(2,1)
+axs[0].plot(chrom.time,chrom.chrom_1D)
+plt.xlabel("Time", fontsize=12.5)
+plt.ylabel("Absorbance", fontsize=12.5)
+for peak in chrom.peaks:
+    axs[0].plot(chrom.time[peak.all_maxima],chrom.chrom_1D[peak.all_maxima], marker='*', linestyle='None')
+
 
 filenames = [
 "02.CSV","04.CSV","05.CSV","12.CSV","27.CSV","30.CSV","34.CSV","38.CSV","39.CSV",
@@ -39,14 +47,10 @@ cmps = [pd.read_csv(base_path / f, sep="\t", encoding="utf-16").to_numpy() for f
 for cmp in cmps:
     plt.plot(cmp[:,0], cmp[:,1] - base, linewidth=1.25)
 
+for cmp in cmps:
+    axs[1].plot(cmp[:,0], cmp[:,1], linewidth=1.25)
+
 #plt.plot(x[apex_loc], -5*np.ones_like(apex_loc), '|r', linewidth=1)
-plt.xlabel("Time", fontsize=17.5)
-plt.ylabel("Absorbance", fontsize=17.5)
-plt.xlim(0,14)
+plt.xlabel("Time", fontsize=12.5)
+plt.ylabel("Absorbance", fontsize=12.5)
 plt.show()
-
-# need to play with minimum_depth parameter
-# how to automate tuning ??
-
-# or use spectra of deconvolution to clean up
-# but then only possible for DAD and MS and not for 1D

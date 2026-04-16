@@ -1,15 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c52535c2-0f98-4268-ad6b-ca2e0a5cdab6" name="Changes" comment="" />
+    <list default="true" id="c52535c2-0f98-4268-ad6b-ca2e0a5cdab6" name="Changes" comment="Initial Commit of ChromProcessor project">
+      <change beforePath="$PROJECT_DIR$/.idea/ChromProcessor.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ChromProcessor.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baseline_correction.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Chromatogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Chromatograms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Peak.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/PeakModel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/__init__().py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deconvolution.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example_processing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/benchmark_noise_baseline.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/benchmark_noise_baseline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_baseline_correction_simulated.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_baseline_correction_simulated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_deconvolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_deconvolution.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_noise_removal_baseline_correction.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_noise_removal_baseline_correction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_detection_GRA.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_detection_GRA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_detection_ISO40.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_detection_ISO40.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_detection_ISO_F10.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_detection_ISO_F10.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_detection_Wahab.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_detection_Wahab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_tracking.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_tracking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_tracking_UV.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_tracking_UV.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/overlap_boundaries.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/overlap_boundaries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parse.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/peak_detection.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/peak_models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/peak_tracking.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chromprocessor/noise_removal.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/noise_removal.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="48" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "EmeryBosten"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/EmeryBosten/ChromProcessor.git",
+    "accountId": "123db8ec-41ee-47b5-94d5-9a84ca4ef7c0"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="3AFW0q8F2hLdjEB4NkEKDOicnzk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -18,13 +80,46 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.Chromatogram.executor": "Run",
+    "Python.benchmark_noise_baseline.executor": "Run",
+    "Python.deconvolution.executor": "Run",
+    "Python.example_baseline_correction_simulated.executor": "Run",
+    "Python.example_deconvolution.executor": "Run",
+    "Python.example_noise_removal_baseline_correction.executor": "Run",
+    "Python.example_peak_detection.executor": "Run",
+    "Python.example_peak_detection_GRA.executor": "Run",
+    "Python.example_peak_detection_ISO40.executor": "Run",
+    "Python.example_peak_detection_ISO_F10.executor": "Run",
+    "Python.example_peak_detection_Wahab.executor": "Run",
+    "Python.example_peak_tracking.executor": "Run",
+    "Python.example_peak_tracking_UV.executor": "Run",
+    "Python.example_processing.executor": "Run",
+    "Python.example_run.executor": "Run",
+    "Python.overlap_boundaries.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "master",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\emery\OneDrive - KU Leuven\Python scripts\ChromProcessor\classes" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -40,11 +135,49 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1772188578764</updated>
-      <workItem from="1772188579779" duration="20000" />
+      <workItem from="1772188579779" duration="13068000" />
+      <workItem from="1772447063237" duration="6858000" />
+      <workItem from="1772528068345" duration="5902000" />
+      <workItem from="1773128073563" duration="5779000" />
+      <workItem from="1773236444739" duration="3902000" />
+      <workItem from="1773299568303" duration="16423000" />
+      <workItem from="1773646341098" duration="21112000" />
+      <workItem from="1773731246573" duration="9778000" />
+      <workItem from="1773822666688" duration="51909000" />
+      <workItem from="1775024300393" duration="16715000" />
+      <workItem from="1775114099990" duration="14241000" />
+      <workItem from="1775212012206" duration="63000" />
+      <workItem from="1775561971234" duration="42667000" />
+      <workItem from="1776081791023" duration="2721000" />
+      <workItem from="1776166642802" duration="1482000" />
+      <workItem from="1776245446407" duration="6721000" />
+      <workItem from="1776331036751" duration="1453000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial Commit of ChromProcessor project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit of ChromProcessor project" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ChromProcessor$benchmark_noise_baseline.coverage" NAME="benchmark_noise_baseline Coverage Results" MODIFIED="1774475094965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_run.coverage" NAME="example_run Coverage Results" MODIFIED="1772204125399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$deconvolution.coverage" NAME="deconvolution Coverage Results" MODIFIED="1772203683280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_GRA.coverage" NAME="example_peak_detection_GRA Coverage Results" MODIFIED="1776247614115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_Wahab.coverage" NAME="example_peak_detection_Wahab Coverage Results" MODIFIED="1776247682839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$overlap_boundaries.coverage" NAME="overlap_boundaries Coverage Results" MODIFIED="1775135470711" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_processing.coverage" NAME="example_processing Coverage Results" MODIFIED="1776247731007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking_UV.coverage" NAME="example_peak_tracking_UV Coverage Results" MODIFIED="1776251223706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection.coverage" NAME="example_peak_detection Coverage Results" MODIFIED="1773238956170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO_F10.coverage" NAME="example_peak_detection_ISO_F10 Coverage Results" MODIFIED="1776248905797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_noise_removal_baseline_correction.coverage" NAME="example_noise_removal_baseline_correction Coverage Results" MODIFIED="1775737058296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO40.coverage" NAME="example_peak_detection_ISO40 Coverage Results" MODIFIED="1776249107195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$Chromatogram.coverage" NAME="Chromatogram Coverage Results" MODIFIED="1776082480398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/chromprocessor/classes" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_baseline_correction_simulated.coverage" NAME="example_baseline_correction_simulated Coverage Results" MODIFIED="1776082629873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking.coverage" NAME="example_peak_tracking Coverage Results" MODIFIED="1776248860285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_deconvolution.coverage" NAME="example_deconvolution Coverage Results" MODIFIED="1775212022225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
   </component>
 </project>
