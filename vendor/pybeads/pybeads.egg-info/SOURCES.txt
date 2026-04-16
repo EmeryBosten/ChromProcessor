@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+pybeads/__init__.py
+pybeads.egg-info/PKG-INFO
+pybeads.egg-info/SOURCES.txt
+pybeads.egg-info/dependency_links.txt
+pybeads.egg-info/requires.txt
+pybeads.egg-info/top_level.txt

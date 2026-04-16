@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: pybeads
+Version: 1.0.1
+Summary: Baseline estimation and denoizing algorithm using sparcity
+Author-email: Kotaro Saito <kotaro.saito@kek.jp>
+License-Expression: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: scipy
+
+# Vendored pybeads
+
+This is a vendored copy of `pybeads` used by this project.
+
+## Local patch
+
+Compatibility fix for NumPy 2.x positional-only arguments:
+- `np.reshape(a=..., newshape=...)` -> `np.reshape(..., (...))`
+- `np.convolve(a=..., v=...)` -> `np.convolve(..., ...)`

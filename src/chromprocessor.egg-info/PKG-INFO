@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: chromprocessor
+Version: 0.1.0
+Summary: Chromatogram processing and deconvolution tools
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: scikit-learn
+Requires-Dist: pybeads
+
+# chromprocessor
+
+Python tools for chromatogram parsing, preprocessing, peak detection, tracking, and deconvolution.
+
+## Install
+
+```powershell
+python -m pip install -e .
+```
+
+## Quick import check
+
+```powershell
+python -c "import chromprocessor; print(chromprocessor.__name__)"
+```

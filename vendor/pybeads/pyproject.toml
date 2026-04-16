@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybeads"
+version = "1.0.1"
+description = "Baseline estimation and denoizing algorithm using sparcity"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+  { name = "Kotaro Saito", email = "kotaro.saito@kek.jp" }
+]
+dependencies = [
+  "numpy",
+  "scipy"
+]
+
+[tool.setuptools]
+packages = ["pybeads"]
