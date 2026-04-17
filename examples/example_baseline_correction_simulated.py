@@ -20,7 +20,7 @@ y = Signal.astype(float)
 x = (Signal - added_noise - baseline).astype(float)
 xbaseline = (Signal - added_noise).astype(float)
 
-chrom = Chromatogram(y - baseline, None, None, None, np.linspace(0,10,len(y)),None)
+chrom = Chromatogram(y, None, None, None, np.linspace(0,10,len(y)),None)
 chrom.remove_blank()
 
 # processing of chromatogram

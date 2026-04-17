@@ -16,7 +16,8 @@ axes[1].legend(ncol=4)
 plt.show()
 
 # We are going to use forth data + noise
-y = data[:, 5] + data[:, 8]
+#y = data[:, 5] + data[:, 8]
+y = data[:, 5]
 fig, axes = plt.subplots(1, 2, figsize=(15, 3))
 axes[0].plot(y)
 axes[1].plot(y)
@@ -27,7 +28,7 @@ chrom = Chromatogram(y, None, None, None, np.linspace(0,10,len(y)),None)
 chrom.remove_blank()
 
 # processing of chromatogram
-chrom.correct_baseline()
+chrom.correct_baseline(method = "flatfit")
 
 plt.figure()
 plt.plot(y)

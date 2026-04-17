@@ -191,3 +191,52 @@ def flatfit(data: ArrayLike, smoothness: float, p: float) -> NDArray:
     z = spsolve(Z, w * y)
 
     return z
+
+def autoFlatFit(y, lam, p = 0.03, plot=True):
+    """
+    Automated flatfit baseline correction
+    Args:
+        y : signal
+        lam : regularization parameter
+        p : SG size parameter
+        plot : whether to plot the extended signal
+    Returns:
+        err : RMSE of fitting
+    """
+    y = np.asarray(y, dtype=float).flatten()
+    n = len(y)
+    om = round(n / 20)
+    w = round(n / 5)
+    h = np.max(y)
+
+    # Linear regression on last `om` points
+    x = np.arange(1, om + 1).reshape(-1, 1)
+    model = LinearRegression().fit(x, y[-om:])
+    intercept, slope = model.intercept_, model.coef_[0]
+
+    # Extrapolate end portion
+    ye = intercept + slope * np.arange(1, om + w + 1)
+    yext = ye[om:om + w]
+
+    # Gaussian tail
+    def gauss(t, mean, sd):
+        return np.exp(-((t - mean) ** 2) / (2 * sd ** 2))
+
+    yg = (h - yext[w - 1]) * gauss(np.arange(1, w + 1), w / 2, w / 20)
+    ynew = yext + yg
+    yadd = np.concatenate([y, ynew])
+
+    if plot:
+        plt.plot(yadd, label="Extended signal")
+        plt.title("Extended signal for erPLS")
+        plt.legend()
+        plt.show()
+
+    z = flatfit(yadd, lam, p)
+
+    # RMSE function
+    def rmse(actual, predicted):
+        return np.sqrt(np.mean((actual - predicted) ** 2))
+
+    err = rmse(yext, z[-w:])
+    return err

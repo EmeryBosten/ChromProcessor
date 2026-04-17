@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -8,7 +8,7 @@ from . import Peak
 from . import PeakModel
 
 # functions for baseline correction
-from ..baseline_correction import erPLSrmse, airPLS
+from ..baseline_correction import erPLSrmse, airPLS, autoFlatFit, flatfit
 from ..noise_removal import modoneNNestimator
 
 # libraries for noise removal
@@ -96,7 +96,7 @@ class Chromatogram:
         if self.signal_raw_UV.ndim == 2:
             self.chrom_1D = np.mean(self.chrom_2D, axis=0)
 
-    def correct_baseline(self, base_lambdas: NDArray = np.logspace(1, 12, 10), d: int = 2, n: int = 20):
+    def correct_baseline(self, base_lambdas: NDArray = np.logspace(1, 12, 10), d: int = 2, n: int = 20, method: Literal[ "erpls", "flatfit"] = "erpls", p = 0.03):
         """
         Correct baseline of chromatogram
 
@@ -114,16 +114,31 @@ class Chromatogram:
 
         err = np.zeros(len(base_lambdas))  # preallocate error array
 
-        # Compute errors for each lambda
-        for i, lam in enumerate(base_lambdas):
-            err[i] = erPLSrmse(self.chrom_1D, lam, d, n, plot=False)
+        if method == "erpls":
 
-        # Find minimum error and corresponding index
-        #m = np.min(err)
-        ind = np.argmin(err)
+            # Compute errors for each lambda
+            for i, lam in enumerate(base_lambdas):
+                err[i] = erPLSrmse(self.chrom_1D, lam, d, n, plot=False)
 
-        # Perform baseline correction using the optimal lambda
-        z = airPLS(self.chrom_1D, base_lambdas[ind], d, n)
+            # Find minimum error and corresponding index
+            #m = np.min(err)
+            ind = np.argmin(err)
+
+            # Perform baseline correction using the optimal lambda
+            z = airPLS(self.chrom_1D, base_lambdas[ind], d, n)
+
+        else:
+
+            # Compute errors for each lambda
+            for i, lam in enumerate(base_lambdas):
+                err[i] = autoFlatFit(self.chrom_1D, lam, p, plot=False)
+
+            # Find minimum error and corresponding index
+            # m = np.min(err)
+            ind = np.argmin(err)
+
+            # Perform baseline correction using the optimal lambda
+            z = flatfit(self.chrom_1D, base_lambdas[ind], p = 0.03)
 
         # Subtract the estimated baseline from the signal
         y_baseline_corrected = self.chrom_1D - z
