@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c52535c2-0f98-4268-ad6b-ca2e0a5cdab6" name="Changes" comment="Initial Commit of ChromProcessor project">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/example_baseline_correction_simulated.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_baseline_correction_simulated.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/example_noise_removal_baseline_correction.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_noise_removal_baseline_correction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chromprocessor/baseline_correction.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/baseline_correction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatogram.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatograms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatograms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="48" />
+    <option name="cachedIndexableFilesCount" value="45" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -132,6 +129,8 @@
       <workItem from="1776245446407" duration="6721000" />
       <workItem from="1776331036751" duration="4632000" />
       <workItem from="1776419300441" duration="1789000" />
+      <workItem from="1776428163462" duration="1865000" />
+      <workItem from="1776676748386" duration="646000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit of ChromProcessor project">
       <option name="closed" value="true" />
@@ -146,6 +145,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit of ChromProcessor project" />
@@ -162,7 +172,7 @@
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking_UV.coverage" NAME="example_peak_tracking_UV Coverage Results" MODIFIED="1776251223706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection.coverage" NAME="example_peak_detection Coverage Results" MODIFIED="1773238956170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO_F10.coverage" NAME="example_peak_detection_ISO_F10 Coverage Results" MODIFIED="1776248905797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_noise_removal_baseline_correction.coverage" NAME="example_noise_removal_baseline_correction Coverage Results" MODIFIED="1776420874299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_noise_removal_baseline_correction.coverage" NAME="example_noise_removal_baseline_correction Coverage Results" MODIFIED="1776428252537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO40.coverage" NAME="example_peak_detection_ISO40 Coverage Results" MODIFIED="1776249107195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$Chromatogram.coverage" NAME="Chromatogram Coverage Results" MODIFIED="1776082480398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/chromprocessor/classes" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_baseline_correction_simulated.coverage" NAME="example_baseline_correction_simulated Coverage Results" MODIFIED="1776421051118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />

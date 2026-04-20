@@ -34,6 +34,7 @@ class Chromatograms:
             preprocessed_chromatograms = []
             for chromatogram in self.chromatograms:
                 chromatogram.remove_blank()
+                chromatogram.from_2D_to_1D()
                 chromatogram.correct_baseline()
                 chromatogram.remove_noise()
                 preprocessed_chromatograms.append(chromatogram)
@@ -43,8 +44,6 @@ class Chromatograms:
         # peak detection and deconvolution
         multi_peaks = []
         for chromatogram in self.chromatograms:
-            chromatogram.remove_blank()
-            chromatogram.from_2D_to_1D()
             chromatogram.detect_peaks(height_ratio=height_ratio, width=width, distance_ratio=distance_ratio, remove_0_width = remove_0_width)
             if self.MS:
                 chromatogram.getMSspec()
