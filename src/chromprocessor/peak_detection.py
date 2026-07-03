@@ -1,8 +1,11 @@
 # function for automated peak detection
 
-import numpy as np
-from matplotlib import pyplot as plt
 from scipy.signal import find_peaks
+
+
+import numpy as np
+from scipy.signal import find_peaks as scipy_find_peaks  # type: ignore
+
 
 
 def findMin(deriv2, y, noise_thresh, height_ratio, distance, width):
@@ -43,8 +46,7 @@ def findMin(deriv2, y, noise_thresh, height_ratio, distance, width):
     max_deriv2_noise = k * np.median(np.abs(deriv2 - np.median(deriv2)))  # noise estimate second derivative
 
     #distance and width parameters might be dependent on acquisition rate
-    candidate_apex_loc, _ = find_peaks(-deriv2, distance=distance, width= width)  # identifying minimas
-
+    candidate_apex_loc, props = find_peaks(-deriv2, distance=distance, width= width)  # identifying minimas
     final_apex_loc = []
 
     for apex_loc in candidate_apex_loc:
@@ -61,8 +63,9 @@ def findMin(deriv2, y, noise_thresh, height_ratio, distance, width):
 
             # local search for true apex
             idx = np.argmax(y[apex_loc-10:apex_loc+11]) + (apex_loc-10)
-
             final_apex_loc.append(idx)
+
+
 
     final_apex_loc = np.unique(np.array(final_apex_loc))
 
@@ -99,3 +102,39 @@ def peakStartEnd(y, apex):
         endpoint.append(g)
 
     return startpoint, endpoint
+
+
+from scipy.signal import savgol_filter
+import numpy as np
+
+def smooth_signal(y, window=11, poly=3):
+    return savgol_filter(y, window_length=window, polyorder=poly)
+
+
+def compute_derivatives(y, window=11, poly=3):
+    y_smooth = savgol_filter(y, window, poly)
+    dy = savgol_filter(y, window, poly, deriv=1)
+    d2y = savgol_filter(y, window, poly, deriv=2)
+    return y_smooth, dy, d2y
+
+def peak_start_end_simple(y, apex):
+    y = np.asarray(y)
+    dy = np.gradient(y)
+
+    starts = []
+    ends = []
+
+    for a in apex:
+        # left
+        i = a
+        while i > 1 and dy[i] > 0:
+            i -= 1
+        starts.append(i)
+
+        # right
+        i = a
+        while i < len(y)-2 and dy[i] < 0:
+            i += 1
+        ends.append(i)
+
+    return starts, ends

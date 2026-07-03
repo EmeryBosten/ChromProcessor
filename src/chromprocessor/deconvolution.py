@@ -3,6 +3,8 @@ from matplotlib import pyplot as plt
 from numpy.typing import NDArray
 from typing import List, Tuple
 
+from scipy.ndimage import gaussian_filter
+
 from .classes import Peak
 from .classes import PeakModel
 
@@ -118,7 +120,7 @@ def merge_overlapping_peaks(data: NDArray, peaks: List[Peak]):
 
     sorted_peaks = sorted(peaks, key=lambda p: p.left)
 
-    merged_peaks = [peaks[0]]
+    merged_peaks = [sorted_peaks[0]]
     for peak in sorted_peaks[1:]:
         if _overlap(merged_peaks[-1], peak) >= 0:
             merged_peaks[-1] = _merge_two_peaks(data, merged_peaks[-1], peak)
@@ -148,6 +150,48 @@ def _merge_two_peaks(data: NDArray, p1: Peak, p2: Peak) -> Peak:
         all_maxima=p1.all_maxima + p2.all_maxima
     )
 
+
+def estimate_background_noise(data: NDArray, peaks: List[Peak], mult: float = 4) -> float:
+    """Iteratively calculates std outside of peaks and crops data at multiple of std"""
+
+    y = np.array(data)
+
+    keep = np.ones(y.shape) == 1.
+    for peak in peaks:
+        keep[peak.left:peak.right] = False
+
+    y = y[keep]
+
+    # avoid empty
+    if len(y) == 0:
+        y = np.array(data)
+    min_std = np.std(y) * 0.01
+
+    old_std = 0
+    while True:
+        std = np.std(y)
+        if std < min_std:
+            return min_std
+        if np.abs(old_std - std)/std < 1e-5:
+            return std
+        y = np.clip(y, -mult*std, mult*std)
+        old_std = std
+
+
+def expand_peaks(data: NDArray, peaks: List[Peak], max_cutoff: float) -> None:
+    """Expands peak borders until derivative changes sign and signal decreases under max_cutoff"""
+
+    smooth = gaussian_filter(data, 1.)
+    deriv = gaussian_filter(data, 1., order=1)
+
+    for p in peaks:
+        while p.left > 0 and (smooth[p.left] > max_cutoff or deriv[p.left] > 0):
+            p.left -= 1
+
+        while p.right < smooth.shape[0] - 1 and (smooth[p.right] > max_cutoff or deriv[p.right] < 0):
+            p.right += 1
+
+    return peaks
 
 # functions for deconvoltion
 
@@ -209,10 +253,10 @@ def fit_peak_model(
     n_comps = len(peaks.all_maxima)
 
     # get spectra
-    #maxima = np.asarray(peaks.all_maxima) - peaks.left
-    #spectra = data[:, maxima].T
+    maxima = np.asarray(peaks.all_maxima) - peaks.left
+    spectra = data[:, maxima].T
     # using simplisma
-    spectra, initial_concs = simplisma(data, n_comps, 5)
+    #spectra, initial_concs = simplisma(data, n_comps, 5)
 
     # Some generally useful variables
     t = np.arange(data.shape[1], dtype=float)
@@ -226,7 +270,7 @@ def fit_peak_model(
 
         if initial_concs is None:
             # adjust spectra guess to mean=1
-            spectra = (spectra.T / np.mean(spectra, axis=1)).T
+            #spectra = (spectra.T / np.mean(spectra, axis=1)).T
             # add peaks and remove their contribution one by one
             residual_data = data.copy()
             for peak_index in range(spectra.shape[0]):

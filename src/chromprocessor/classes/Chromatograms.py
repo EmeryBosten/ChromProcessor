@@ -4,7 +4,7 @@ from typing import List, Any
 
 from . import Chromatogram
 
-from ..peak_models import BiGaussian, BiGaussianTailing
+from ..peak_models import BiGaussian, BiGaussianTailing, FraserSuzuki
 
 #functions for peak tracking
 from ..peak_tracking import SimMeasurementMS, SimMeasurementUV, chosenPairMS, chosenPairUV
@@ -35,7 +35,7 @@ class Chromatograms:
             for chromatogram in self.chromatograms:
                 chromatogram.remove_blank()
                 chromatogram.from_2D_to_1D()
-                chromatogram.correct_baseline()
+                chromatogram.correct_baseline(method="flatfit")
                 chromatogram.remove_noise()
                 preprocessed_chromatograms.append(chromatogram)
 
@@ -48,7 +48,7 @@ class Chromatograms:
             if self.MS:
                 chromatogram.getMSspec()
             else :
-                chromatogram.deconvolve_peaks(BiGaussianTailing())
+                chromatogram.deconvolve_peaks(FraserSuzuki())
             multi_peaks.append(chromatogram.peaks)
 
         # peak tracking
@@ -113,7 +113,11 @@ class Chromatograms:
                                                               Specs_UV[indMaxNumPeaks], Specs_UV[i],
                                                               Peak_heights[indMaxNumPeaks],Peak_heights[i],
                                                               relative_rts[indMaxNumPeaks], relative_rts[i])
-                [pairs, _] = chosenPairUV(simUV, heightSim, posSim)
+                print(simUV)
+                print(heightSim)
+                print(posSim)
+                [pairs, Scores] = chosenPairUV(simUV, heightSim, posSim)
+                print(Scores)
                 Tracks.append(pairs)
                 i = i + 1
         # Create Retention Time Table

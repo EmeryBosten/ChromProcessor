@@ -4,9 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c52535c2-0f98-4268-ad6b-ca2e0a5cdab6" name="Changes" comment="Initial Commit of ChromProcessor project">
+    <list default="true" id="c52535c2-0f98-4268-ad6b-ca2e0a5cdab6" name="Changes" comment="correct peak tracking">
+      <change afterPath="$PROJECT_DIR$/examples/example_Pulsar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/example_deconvolution_mocca.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/example_peak_tracking_MS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_baseline_correction_simulated.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_baseline_correction_simulated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_deconvolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_deconvolution.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_noise_removal_baseline_correction.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_noise_removal_baseline_correction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_detection_ISO40.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_detection_ISO40.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_detection_ISO_F10.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_detection_ISO_F10.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example_peak_tracking_UV.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example_peak_tracking_UV.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/overlap_boundaries.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/overlap_boundaries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatogram.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatograms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/classes/Chromatograms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chromprocessor/deconvolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/deconvolution.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chromprocessor/peak_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/peak_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chromprocessor/peak_tracking.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chromprocessor/peak_tracking.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +28,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="45" />
+    <option name="cachedIndexableFilesCount" value="48" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -59,8 +73,11 @@
     &quot;Python.Chromatogram.executor&quot;: &quot;Run&quot;,
     &quot;Python.benchmark_noise_baseline.executor&quot;: &quot;Run&quot;,
     &quot;Python.deconvolution.executor&quot;: &quot;Run&quot;,
+    &quot;Python.example_Pulsar.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_baseline_correction_simulated.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_deconvolution.executor&quot;: &quot;Run&quot;,
+    &quot;Python.example_deconvolution_mocca.executor&quot;: &quot;Run&quot;,
+    &quot;Python.example_decpnvolution_Peaksel.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_noise_removal_baseline_correction.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_peak_detection.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_peak_detection_GRA.executor&quot;: &quot;Run&quot;,
@@ -68,6 +85,7 @@
     &quot;Python.example_peak_detection_ISO_F10.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_peak_detection_Wahab.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_peak_tracking.executor&quot;: &quot;Run&quot;,
+    &quot;Python.example_peak_tracking_MS.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_peak_tracking_UV.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_processing.executor&quot;: &quot;Run&quot;,
     &quot;Python.example_run.executor&quot;: &quot;Run&quot;,
@@ -130,7 +148,27 @@
       <workItem from="1776331036751" duration="4632000" />
       <workItem from="1776419300441" duration="1789000" />
       <workItem from="1776428163462" duration="1865000" />
-      <workItem from="1776676748386" duration="646000" />
+      <workItem from="1776676748386" duration="5235000" />
+      <workItem from="1776774857333" duration="4929000" />
+      <workItem from="1776848138663" duration="6505000" />
+      <workItem from="1776858205740" duration="15279000" />
+      <workItem from="1777021163679" duration="2310000" />
+      <workItem from="1777366686425" duration="5597000" />
+      <workItem from="1777463746931" duration="5307000" />
+      <workItem from="1777889500795" duration="4102000" />
+      <workItem from="1778572141000" duration="640000" />
+      <workItem from="1778662655130" duration="5168000" />
+      <workItem from="1780471201892" duration="15512000" />
+      <workItem from="1780559456346" duration="9328000" />
+      <workItem from="1780643148811" duration="10723000" />
+      <workItem from="1780910774444" duration="7443000" />
+      <workItem from="1780987810937" duration="5893000" />
+      <workItem from="1781597467433" duration="26509000" />
+      <workItem from="1781875784865" duration="5875000" />
+      <workItem from="1782129526333" duration="5515000" />
+      <workItem from="1782196334576" duration="14191000" />
+      <workItem from="1782370371327" duration="593000" />
+      <workItem from="1782997159732" duration="1648000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit of ChromProcessor project">
       <option name="closed" value="true" />
@@ -140,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776332694668</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="correct peak tracking">
+      <option name="closed" value="true" />
+      <created>1776677422480</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1776677422480</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,24 +205,40 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit of ChromProcessor project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit of ChromProcessor project" />
+    <MESSAGE value="correct peak tracking" />
+    <option name="LAST_COMMIT_MESSAGE" value="correct peak tracking" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/example_deconvolution_mocca.py</url>
+          <line>15</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ChromProcessor$benchmark_noise_baseline.coverage" NAME="benchmark_noise_baseline Coverage Results" MODIFIED="1774475094965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_decpnvolution_Peaksel.coverage" NAME="example_decpnvolution_Peaksel Coverage Results" MODIFIED="1780493989448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_run.coverage" NAME="example_run Coverage Results" MODIFIED="1772204125399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ChromProcessor$deconvolution.coverage" NAME="deconvolution Coverage Results" MODIFIED="1772203683280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_GRA.coverage" NAME="example_peak_detection_GRA Coverage Results" MODIFIED="1776247614115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_GRA.coverage" NAME="example_peak_detection_GRA Coverage Results" MODIFIED="1781678607543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_Wahab.coverage" NAME="example_peak_detection_Wahab Coverage Results" MODIFIED="1776247682839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$overlap_boundaries.coverage" NAME="overlap_boundaries Coverage Results" MODIFIED="1775135470711" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_processing.coverage" NAME="example_processing Coverage Results" MODIFIED="1776420631891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking_UV.coverage" NAME="example_peak_tracking_UV Coverage Results" MODIFIED="1776251223706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$overlap_boundaries.coverage" NAME="overlap_boundaries Coverage Results" MODIFIED="1781614756443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking_UV.coverage" NAME="example_peak_tracking_UV Coverage Results" MODIFIED="1782138035565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection.coverage" NAME="example_peak_detection Coverage Results" MODIFIED="1773238956170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO_F10.coverage" NAME="example_peak_detection_ISO_F10 Coverage Results" MODIFIED="1776248905797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_noise_removal_baseline_correction.coverage" NAME="example_noise_removal_baseline_correction Coverage Results" MODIFIED="1776428252537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO40.coverage" NAME="example_peak_detection_ISO40 Coverage Results" MODIFIED="1776249107195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$Chromatogram.coverage" NAME="Chromatogram Coverage Results" MODIFIED="1776082480398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/chromprocessor/classes" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_baseline_correction_simulated.coverage" NAME="example_baseline_correction_simulated Coverage Results" MODIFIED="1776421051118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO_F10.coverage" NAME="example_peak_detection_ISO_F10 Coverage Results" MODIFIED="1781682936477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_noise_removal_baseline_correction.coverage" NAME="example_noise_removal_baseline_correction Coverage Results" MODIFIED="1781687119434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_Pulsar.coverage" NAME="example_Pulsar Coverage Results" MODIFIED="1782198113596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_detection_ISO40.coverage" NAME="example_peak_detection_ISO40 Coverage Results" MODIFIED="1781682780277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking_MS.coverage" NAME="example_peak_tracking_MS Coverage Results" MODIFIED="1782307215450" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$Chromatogram.coverage" NAME="Chromatogram Coverage Results" MODIFIED="1780572829872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/chromprocessor/classes" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_baseline_correction_simulated.coverage" NAME="example_baseline_correction_simulated Coverage Results" MODIFIED="1781686609705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/ChromProcessor$example_peak_tracking.coverage" NAME="example_peak_tracking Coverage Results" MODIFIED="1776248860285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/ChromProcessor$example_deconvolution.coverage" NAME="example_deconvolution Coverage Results" MODIFIED="1775212022225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_deconvolution_mocca.coverage" NAME="example_deconvolution_mocca Coverage Results" MODIFIED="1781700760532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/ChromProcessor$example_deconvolution.coverage" NAME="example_deconvolution Coverage Results" MODIFIED="1781880914076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
   </component>
 </project>

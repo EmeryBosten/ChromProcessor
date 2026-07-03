@@ -31,7 +31,8 @@ from ..peak_detection import findMin, peakStartEnd
 from scipy.signal import peak_widths
 from scipy.signal import peak_prominences
 #functions for deconvolution
-from ..deconvolution import merge_overlapping_peaks, fit_peak_model, spectra_from_concentrations, simplisma
+from ..deconvolution import merge_overlapping_peaks, fit_peak_model, spectra_from_concentrations, simplisma, \
+    estimate_background_noise, expand_peaks
 from ..peak_models import BiGaussianTailing
 
 
@@ -239,13 +240,12 @@ class Chromatogram:
         distance = len(self.chrom_1D)/distance_ratio
 
         apex_loc = findMin(dz2, self.chrom_1D, noise_thresh, height_ratio, distance, width)
-        _, _, minima_left, minima_right = peak_widths(-dz2, apex_loc, rel_height=1)
 
-        startpoint, endpoint = peakStartEnd(self.chrom_1D, apex_loc)
+        left, right = peakStartEnd(self.chrom_1D, apex_loc)
         res = (self.chrom_1D - self.chrom_1D.min()) / (self.chrom_1D.max() - self.chrom_1D.min())
 
         # peak widths
-        diff = np.asarray(endpoint) - np.asarray(startpoint)
+        diff = np.asarray(right) - np.asarray(left)
         wlen = max(diff)
         prominences = peak_prominences(res, apex_loc, wlen)
         _, _, left, right = peak_widths(res, apex_loc, rel_height=1, prominence_data=prominences)
@@ -262,6 +262,10 @@ class Chromatogram:
             "#bcbd22",
             "#17becf",
         ]
+
+        # Find way of precise peak width estimation
+        # too narrow !
+        # using derivatives ?
 
         # Create instances of Peak
         peaks = []
@@ -296,7 +300,7 @@ class Chromatogram:
         #plt.title('Peak Detection')
 
         for i in range(len(loc)):
-            plt.hlines(y=0, xmin=self.time[int(left[i])], xmax=self.time[int(right[i])], colors=colors[i % len(colors)])
+            plt.hlines(y=0, xmin=self.time[int(peaks[i].left)], xmax=self.time[int(peaks[i].right)], colors=colors[i % len(colors)])
 
         plt.show()
 
@@ -319,6 +323,11 @@ class Chromatogram:
         # merge peaks into groups
         merged_peaks = merge_overlapping_peaks(self.chrom_1D, self.peaks)
         self.peaks = merged_peaks
+
+        # extend boundaries of merged peaks
+        # needs a bit of fine-tuning
+        background_std = estimate_background_noise(self.chrom_1D, self.peaks)
+        self.peaks = expand_peaks(self.chrom_1D, self.peaks, background_std)
 
         plt.figure()
         plt.plot(self.time, self.chrom_1D)
@@ -352,25 +361,109 @@ class Chromatogram:
         self.shift = loc_main_peak_MS - loc_main_peak_UV
 
     def getMSspec(self):
-        self.UVtoMSshift()
-        for idx, peak in enumerate(self.peaks):
 
-            def find_nearest_index(array, value):
-                # Convert array to a NumPy array if it isn't already
-                array = np.asarray(array)
-                # Calculate the absolute difference between each element and the value
-                differences = np.abs(array - value)
-                # Find the index of the minimum difference
-                closest_index = differences.argmin()
+        def find_nearest_index(array, values, return_each=True):
+
+            """
+
+            Find nearest index(es) in `array` to `values`.
+
+
+
+            Parameters
+
+            - array: 1-D array-like of numeric values
+
+            - values: scalar or iterable of target values
+
+            - return_each: if True, return a numpy array of indices (one per value).
+
+                           if False, return a single index: the array index
+
+                           whose element is closest to any of the given values.
+
+
+
+            Returns
+
+            - int (when return_each=False) or numpy.ndarray of ints (when return_each=True)
+
+            """
+
+            array = np.asarray(array)
+
+            # handle empty array
+
+            if array.size == 0:
+                raise ValueError("`array` must contain at least one element")
+
+            # Normalize values to 1-D array
+
+            if np.isscalar(values):
+
+                vals = np.atleast_1d(values)
+
+            else:
+
+                vals = np.asarray(values)
+
+                if vals.ndim == 0:
+
+                    vals = np.atleast_1d(vals)
+
+                elif vals.ndim > 1:
+
+                    vals = vals.ravel()
+
+            # Compute absolute differences between array elements and each value
+
+            # shape will be (array.size, vals.size)
+
+            diffs = np.abs(array[:, None] - vals[None, :])
+
+            if return_each:
+
+                # For each value, find the index of the closest array element
+
+                # axis=0 over array elements, so result length = vals.size
+
+                indices = diffs.argmin(axis=0)
+
+                return indices
+
+            else:
+
+                # For each array element, find the minimal distance to any value
+
+                # then pick the array index with the smallest of those distances
+
+                min_dist_per_array_elem = diffs.min(axis=1)
+
+                closest_index = int(min_dist_per_array_elem.argmin())
+
                 return closest_index
 
-            maxima_UV = self.time[np.asarray(peak.all_maxima)] + self.shift
-            maxima_MS = find_nearest_index(self.time_MS, maxima_UV)
-            spectra = np.array([self.chrom_2D_MS[:, maxima_MS].T])
+        self.UVtoMSshift()
+
+        for idx, peak in enumerate(self.peaks):
+
+            # method 1 : spectra at peak maxima
+            #maxima_UV = self.time[np.asarray(peak.all_maxima)] + self.shift
+            #maxima_MS = find_nearest_index(self.time_MS, maxima_UV)
+            #spectra = self.chrom_2D_MS[:, maxima_MS].T
+
+            #method 2 : simplisma
+            start_time_UV = self.time[peak.left] + self.shift
+            end_time_UV = self.time[peak.right] + self.shift
+            start_loc_MS = find_nearest_index(self.time_MS, start_time_UV)
+            end_loc_MS = find_nearest_index(self.time_MS, end_time_UV)
+            peak_data = self.chrom_2D_MS[:, start_loc_MS[0]: end_loc_MS[0]]
+            spectra, initial_concs = simplisma(peak_data, len(peak.all_maxima), 5)
 
             # Normalize the spectra and scale concentrations accordingly
-            norm_factors = np.mean(spectra, axis=1) + 1e-7
-            spectra = (spectra.T / norm_factors).T
+            #norm_factors = np.mean(spectra, axis=1) + 1e-7
+            #spectra = (spectra.T / norm_factors).T
 
             # save spectra peak
             self.peaks[idx].spectra_MS = spectra
+

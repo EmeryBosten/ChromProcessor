@@ -136,8 +136,6 @@ def SimMeasurementUV(numPeaks1, numPeaks2,
             # Position similarity
             posSim[i, j] = 1.0 - abs(rrts1[i] - rrts2[j])
 
-    print(simUV)
-
     return simUV, heightSim, posSim
 
 
@@ -274,8 +272,8 @@ def ScoreFunctionMS(heightSim, countMS, posSim):
     """
 
     a = 0.2
-    b = 0.4
-    c = 0.4
+    b = 0.6
+    c = 0.2
 
     Score = (a * heightSim + b * countMS + c * posSim) / (a + b + c)
 
@@ -359,7 +357,7 @@ def MSpeaks(msspec):
     msspec = np.asarray(msspec)
 
     # Step 1: Get top 15 max values and their indices
-    indices = np.argpartition(msspec, -15)[-15:]
+    indices = np.argpartition(msspec, -5)[-5:]
     stored = msspec[indices]
 
     # Step 2: Sort indices for easier grouping
