@@ -1,6 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
-
 
 # functions for peak tracking
 def angle_btv(yA, yB):
@@ -371,7 +369,7 @@ def MSpeaks(msspec):
     current_values = [sorted_values[0]]
 
     for i in range(1, len(sorted_indices)):
-        if sorted_indices[i] - sorted_indices[i - 1] <= 5:
+        if sorted_indices[i] - sorted_indices[i - 1] <= 3:
             # Same group
             current_group.append(sorted_indices[i])
             current_values.append(sorted_values[i])

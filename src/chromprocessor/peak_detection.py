@@ -2,11 +2,9 @@
 
 from scipy.signal import find_peaks
 
-
 import numpy as np
 from scipy.signal import find_peaks as scipy_find_peaks  # type: ignore
-
-
+from scipy.signal import savgol_filter
 
 def findMin(deriv2, y, noise_thresh, height_ratio, distance, width):
     """
@@ -74,13 +72,21 @@ def findMin(deriv2, y, noise_thresh, height_ratio, distance, width):
 
 def peakStartEnd(y, apex):
     """
-    Function to find start and end of peaks
-    :param y:  1D chromatogram
-    :param apex: apex locations of peaks
-    :return:
-    startpoint = start point of peaks
-    endpoint = end point of peaks
+    Function to find start and end of peaks based on their apex locations.
 
+    Parameters
+    ----------
+    y : NDArray
+        1D chromatogram.
+    apex : NDArray
+        Apex locations of peaks.
+
+    Returns
+    -------
+    startpoint : List[float]
+        Start point of each peak.
+    endpoint : List[float]
+        End point of each peak.
     """
 
     e = 0.05 # very arbitrary threshold
@@ -93,6 +99,7 @@ def peakStartEnd(y, apex):
 
     I = np.extract(y < min(y) + e, np.arange(len(y)))
 
+    # Calculates start and end points based on signal peaks
     for i in range(len(apex)):
         S = np.extract(I < apex[i], np.arange(len(I)))
         s = I[S[-1]]
@@ -103,21 +110,73 @@ def peakStartEnd(y, apex):
 
     return startpoint, endpoint
 
-
-from scipy.signal import savgol_filter
-import numpy as np
-
 def smooth_signal(y, window=11, poly=3):
+    """
+        Smooth a 1D signal using Savitzky-Golay filtering.
+
+        Parameters
+        ----------
+        y : NDArray
+            The input signal to be smoothed.
+        window : int, optional
+            The length of the window used for smoothing. Default is 11.
+        poly : int, optional
+            The order of the polynomial used for smoothing. Default is 3.
+
+        Returns
+        -------
+        smoothed_y : NDArray
+            The smoothed signal.
+        """
     return savgol_filter(y, window_length=window, polyorder=poly)
 
 
 def compute_derivatives(y, window=11, poly=3):
+    """
+        Compute the first and second derivatives of a 1D signal using Savitzky-Golay filtering.
+
+        Parameters
+        ----------
+        y : NDArray
+            The input signal.
+        window : int, optional
+            The length of the window used for filtering. Default is 11.
+        poly : int, optional
+            The order of the polynomial used for filtering. Default is 3.
+
+        Returns
+        -------
+        y_smooth : NDArray
+            The smoothed signal.
+        dy : NDArray
+            The first derivative of the signal.
+        d2y : NDArray
+            The second derivative of the signal.
+        """
     y_smooth = savgol_filter(y, window, poly)
     dy = savgol_filter(y, window, poly, deriv=1)
     d2y = savgol_filter(y, window, poly, deriv=2)
     return y_smooth, dy, d2y
 
 def peak_start_end_simple(y, apex):
+    """
+        Find the start and end points of peaks based on their apex locations using a simple approach.
+
+        Parameters
+        ----------
+        y : NDArray
+            The input signal to be analyzed.
+        apex : NDArray
+            The apex locations of the peaks.
+
+        Returns
+        -------
+        starts : List[int]
+            The start points of each peak.
+        ends : List[int]
+            The end points of each peak.
+        """
+
     y = np.asarray(y)
     dy = np.gradient(y)
 

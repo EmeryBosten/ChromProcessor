@@ -113,7 +113,6 @@ def generateChrom(time,resolution,num_peaks, snr_range, A_range, loc, scale, asy
     chroms.append(c)
     chroms_noisy.append(c_noisy)
 
-
     # plot chromatogram
     #fig, ax = plt.subplots()
 
@@ -186,6 +185,9 @@ loc = [2.8, 3.0, 3.2],
 scale = [0.05, 0.05, 0.05],
 asymmetry_range = None)
 
+res1 = 2*0.2/4*(0.1)
+print(res1)
+
 # 2nd chrom -> complete overlap
 c, c_noisy, peaks_chrom2, p_loc, p_scale, p_A2, p_x2 = generateChrom(time = 5,
 resolution = 1000,
@@ -195,6 +197,10 @@ A_range = np.asarray([15,15,20]),
 loc = [2.9, 3.0, 3.1],
 scale = [0.05, 0.05, 0.05],
 asymmetry_range = None)
+
+res1 = 2*0.1/4*(0.1)
+print(res1)
+
 
 # Generate DAD matrices
 #load NK peaks

@@ -145,6 +145,8 @@ for g in range(len(chrom1.peaks)):
     nb_cmps = len(chrom1.peaks[group].all_maxima)
     for i in range(nb_cmps):
         axs[0].plot(chrom1.peaks[group].spectra_MS[i], linewidth=1, color = colors[j])
+        axs[0].tick_params(axis='x', labelbottom=False)
+
         j = j + 1
 
 colors = ["orange", "blue","red", "magenta"]
@@ -154,6 +156,7 @@ for g in range(len(chrom3.peaks)):
     nb_cmps = len(chrom3.peaks[group].all_maxima)
     for i in range(nb_cmps):
         axs[1].plot(chrom3.peaks[group].spectra_MS[i], linewidth=1,color = colors[j])
+        axs[1].tick_params(axis='x', labelbottom=False)
         j = j + 1
 
 colors = ["green", "orange", "blue","red", "magenta"]
@@ -163,6 +166,15 @@ for g in range(len(chrom5.peaks)):
     nb_cmps = len(chrom5.peaks[group].all_maxima)
     for i in range(nb_cmps):
         axs[2].plot(chrom5.peaks[group].spectra_MS[i], linewidth=1,color = colors[j])
+        axs[2].tick_params(axis='x', labelbottom=False)
         j = j + 1
 
+plt.show()
+
+chroms.deconvolute_missing_peaks()
+print(chroms.compounds[1].retention_times)
+
+plt.figure()
+plt.plot(chroms.compounds[0].spectra_MS[1])
+plt.plot(chroms.compounds[1].spectra_MS[1])
 plt.show()

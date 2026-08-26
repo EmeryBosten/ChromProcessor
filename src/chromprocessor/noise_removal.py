@@ -3,6 +3,24 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 def modoneNNestimator(Y, X, type_='median'):
+    """
+        Estimate the noise level using nearest neighbors and multivariate distance.
+
+        Parameters
+        ----------
+        Y : NDArray
+            A 1D array of data values.
+        X : NDArray
+            A 2D array of predictor values.
+        type_ : str, optional
+            The type of noise estimation to perform. Options are 'median' or 'mean'.
+            Defaults to 'median'.
+
+        Returns
+        -------
+        noise_level : Any
+            The estimated noise level based on the chosen type of estimation.
+    """
     Y = np.asarray(Y).ravel()
     X = np.asarray(X)
 

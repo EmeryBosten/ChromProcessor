@@ -1,31 +1,47 @@
-# functions two deconvolute peaks
-from matplotlib import pyplot as plt
+# functions to deconvolute peaks
 from numpy.typing import NDArray
 from typing import List, Tuple
 
+import numpy as np
+import warnings
 from scipy.ndimage import gaussian_filter
+from scipy.linalg import lstsq, LinAlgWarning
 
 from .classes import Peak
 from .classes import PeakModel
 
+from scipy.optimize import minimize
+from scipy.signal import savgol_filter
+from scipy.signal import find_peaks
+
+
 def simplisma(d, nr, error):
-    """
-    Simplisma algorithm [1]. Finds 'purest' spectra based on the explained variance by spectra.
+    """Simplisma algorithm: find 'pure' component spectra from multichannel data.
+
+    This implementation follows the Simplisma approach: it identifies the most
+    spectrally 'pure' columns (time points) and uses them to build an initial
+    estimate of component spectra and concentrations.
 
     Parameters
     ----------
-    d : np.ndarray
-        The input data.
+    d : array-like, shape (n_wavelengths, n_timepoints)
+        Input absorbance (or intensity) matrix where rows correspond to spectral
+        channels (wavelength or m/z) and columns to timepoints.
     nr : int
-        The number of purest spectra to find.
+        Number of pure component spectra to extract.
     error : float
-        A small fraction of the maximmum mean in data to avoid division by zero.
+        Small positive percentage used to avoid division by zero in scoring.
+        Typically a small value like 1-5 (percent).
 
     Returns
     -------
-    np.ndarray
-        The nb_purest purest spectra.
+    sp : ndarray, shape (nr, n_wavelengths)
+        Extracted 'purest' spectra (each row is a spectrum).
+    concs : ndarray, shape (nr, n_timepoints)
+        Estimated concentrations obtained by projecting the data onto the
+        extracted spectra (non-optimized initial estimate).
     """
+
     def wmat(c, imp, irank, jvar):
         dm = np.zeros((irank + 1, irank + 1))
         dm[0, 0] = c[jvar, jvar]
@@ -42,6 +58,7 @@ def simplisma(d, nr, error):
 
         return dm
 
+    d = np.asarray(d)
     nrow, ncol = d.shape
 
     dl = np.zeros((nrow, ncol))
@@ -84,35 +101,32 @@ def simplisma(d, nr, error):
         imp[i + 1] = int(np.argmax(p[i + 1, :]))
         mp[i + 1] = p[i + 1, int(imp[i + 1])]
 
-    sp = np.zeros((nr,nrow))
+    sp = np.zeros((nr, nrow))
 
     for i in range(nr):
         sp[i, 0:nrow] = d[0:nrow, int(imp[i])]
 
-    concs = np.dot(d.T,np.linalg.pinv(sp))
-    concs = concs.reshape(nr,ncol)
+    concs = np.dot(d.T, np.linalg.pinv(sp))
+    concs = concs.reshape(nr, ncol)
 
     return sp, concs
 
-def merge_overlapping_peaks(data: NDArray, peaks: List[Peak]):
-    """
-    Merges any overlapping peaks
+
+def merge_overlapping_peaks(data: NDArray, peaks: List[Peak]) -> List[Peak]:
+    """Merge overlapping Peak objects into combined Peak instances.
 
     Parameters
     ----------
-
-    data: NDArray
-        1D chromatogram data
-
-    peaks: List[Peak]
-        peaks that are checked for overlap and merged
+    data : NDArray
+        1D chromatogram array used to decide which peak apex is dominant when
+        merging two overlapping peaks.
+    peaks : list of Peak
+        Input peaks sorted/unsorted; overlapping entries will be merged.
 
     Returns
     -------
-
-    List[Peak]
-        List of new peaks. Non-overlapping peaks are copied as-is, and overlapping peaks are replaced by merged peaks
-
+    merged_peaks : list of Peak
+        New list of Peak instances with overlaps resolved.
     """
 
     if len(peaks) < 2:
@@ -131,14 +145,21 @@ def merge_overlapping_peaks(data: NDArray, peaks: List[Peak]):
 
 
 def _overlap(p1: Peak, p2: Peak) -> int:
-    """Returns overlap (or negative distance) of two peaks"""
+    """Return overlap length (or negative distance) between two peaks.
+
+    Positive result indicates overlapping samples count; negative means gap length.
+    """
     left = max(p1.left, p2.left)
     right = min(p1.right, p2.right)
     return right - left
 
 
 def _merge_two_peaks(data: NDArray, p1: Peak, p2: Peak) -> Peak:
-    """Merges two peaks"""
+    """Merge two overlapping peaks into a single Peak object.
+
+    The resulting Peak spans the combined left/right bounds and uses the
+    peak apex (maximum, height, prominence) of the higher-intensity peak.
+    """
     larger = p1 if data[p1.maximum] > data[p2.maximum] else p2
 
     return Peak(
@@ -147,16 +168,36 @@ def _merge_two_peaks(data: NDArray, p1: Peak, p2: Peak) -> Peak:
         maximum=larger.maximum,
         height=larger.height,
         prominence=larger.prominence,
-        all_maxima=p1.all_maxima + p2.all_maxima
+        all_maxima=p1.all_maxima + p2.all_maxima,
     )
 
 
 def estimate_background_noise(data: NDArray, peaks: List[Peak], mult: float = 4) -> float:
-    """Iteratively calculates std outside of peaks and crops data at multiple of std"""
+    """Estimate background noise level using regions outside detected peaks.
+
+    The function iteratively computes the standard deviation of signal values
+    outside peak windows and clips extreme values until convergence. The final
+    value is used as a robust estimate of background noise (std).
+
+    Parameters
+    ----------
+    data : NDArray
+        1D chromatogram signal.
+    peaks : list of Peak
+        Detected peaks whose intervals will be excluded from noise estimation.
+    mult : float, optional
+        Clipping multiplier used to remove extreme values during iteration
+        (default: 4).
+
+    Returns
+    -------
+    float
+        Estimated background standard deviation.
+    """
 
     y = np.array(data)
 
-    keep = np.ones(y.shape) == 1.
+    keep = np.ones(y.shape) == 1.0
     for peak in peaks:
         keep[peak.left:peak.right] = False
 
@@ -172,91 +213,113 @@ def estimate_background_noise(data: NDArray, peaks: List[Peak], mult: float = 4)
         std = np.std(y)
         if std < min_std:
             return min_std
-        if np.abs(old_std - std)/std < 1e-5:
+        if np.abs(old_std - std) / std < 1e-5:
             return std
-        y = np.clip(y, -mult*std, mult*std)
+        y = np.clip(y, -mult * std, mult * std)
         old_std = std
 
 
-def expand_peaks(data: NDArray, peaks: List[Peak], max_cutoff: float) -> None:
-    """Expands peak borders until derivative changes sign and signal decreases under max_cutoff"""
+def expand_peaks(data: NDArray, peaks: List[Peak], max_cutoff: float) -> List[Peak]:
+    """Expand peak boundaries outward while signal remains significant.
 
-    smooth = gaussian_filter(data, 1.)
-    deriv = gaussian_filter(data, 1., order=1)
+    For each Peak instance, the left boundary is decreased while the smoothed
+    signal or its derivative indicates continued peak contribution; similarly
+    the right boundary is increased. This helps ensure tails of broad peaks are
+    included before deconvolution.
+
+    Parameters
+    ----------
+    data : NDArray
+        1D chromatogram signal.
+    peaks : list of Peak
+        Peaks whose boundaries will be expanded in-place.
+    max_cutoff : float
+        Threshold derived from background noise (see estimate_background_noise).
+
+    Returns
+    -------
+    peaks : list of Peak
+        The modified list of Peak objects with updated left/right indices.
+    """
+
+    smooth = gaussian_filter(data, 1.0)
+    deriv = gaussian_filter(data, 1.0, order=1)
 
     for p in peaks:
         while p.left > 0 and (smooth[p.left] > max_cutoff or deriv[p.left] > 0):
             p.left -= 1
 
-        while p.right < smooth.shape[0] - 1 and (smooth[p.right] > max_cutoff or deriv[p.right] < 0):
+        while p.right < smooth.shape[0] - 1 and (
+            smooth[p.right] > max_cutoff or deriv[p.right] < 0
+        ):
             p.right += 1
 
     return peaks
 
-# functions for deconvoltion
-
-from numpy.typing import NDArray
-from typing import List
-from scipy.optimize import minimize
-from scipy.signal import savgol_filter
-from scipy.signal import find_peaks
-
 
 def fit_peak_model(
-        data: NDArray,
-        model: PeakModel,
-        peaks: Peak,
-        spectra: NDArray | None = None,
-        adjust_spectra: bool = True,
-        initial_params: None | NDArray = None,
-        initial_concs: None | NDArray = None,
+    data: NDArray,
+    model: PeakModel,
+    peaks: Peak | None = None,
+    spectra: NDArray | None = None,
+    n_comps: int | None = None,
+    adjust_spectra: bool = True,
+    initial_params: None | NDArray = None,
+    initial_concs: None | NDArray = None,
 ) -> Tuple[NDArray, float, NDArray]:
-    """
-    Fits peak shapes to data. Spectra can be fixed or fitted too.
+    """Fit parametric peak shapes to 2D chromatographic data and optionally fit spectra.
+
+    This routine fits a parametric model (provided by `model`) to explain the
+    observed 2D data (wavelength x time) as a linear combination of component
+    spectra and parametric concentration/time profiles. It supports either
+    fixing spectra and fitting only concentration shapes, or jointly fitting
+    both shapes and spectra (controlled by ``adjust_spectra``).
 
     Parameters
     ----------
-    data: NDArray
-        2D chromatogram data, [wavelength, time]
-
-    model: PeakModel
-        mathematical model of the peak shape
-
-    peaks: Peak
-            list of peaks
-
-    spectra: NDArray | None
-        absorption spectra of individual components, [components, wavelength]. If not provided, guess_spectra() is used.
-
-    adjust_spectra: bool
-        whether the spectra should be also fitted. When False, the spectra are kept constant
-
-    initial_params: None | NDArray
-        initial parameters for the models, flattened
-
-    initial_concs: None | NDArray
-        initial guess of the concentrations
+    data : NDArray, shape (n_wavelengths, n_timepoints)
+        Observed 2D chromatographic data (e.g., DAD: wavelengths x time).
+    model : PeakModel
+        An instance implementing the parametric peak shape (val, grad, init_guess, bounds).
+    peaks : Peak, optional
+        A Peak instance representing a (possibly merged) multi-component peak.
+        The number of components defaults to ``len(peaks.all_maxima)`` when
+        ``n_comps`` is not provided.
+    spectra : NDArray, optional, shape (n_components, n_wavelengths)
+        Initial spectral estimates for each component. If None, spectra are
+        guessed from the data at reported maxima.
+    n_comps : int, optional
+        Number of parametric components to fit. If omitted, inferred from the
+        provided Peak object.
+    adjust_spectra : bool, default True
+        If True, spectra are re-estimated inside the fitting loop; otherwise
+        spectra are fixed and only the parametric concentration shapes are fitted.
+    initial_params : ndarray, optional
+        Flattened initial parameter vector for the optimizer. If None, sensible
+        guesses are constructed from peak moments or detected local maxima.
+    initial_concs : ndarray, optional
+        Initial concentration guesses (n_components x n_timepoints). If provided
+        these are used to initialise peak parameter guesses.
 
     Returns
     -------
-    NDArray:
-        Concentrations [component, time]
-
-    float
-        Mean Squared Error
-
-    NDArray:
-        The optimized parameters, flattened
-
+    concentrations : ndarray, shape (n_components, n_timepoints)
+        The fitted concentration/time profiles (one row per component).
+    mse : float
+        Mean squared error of the reconstruction: mean((S.T @ C - data)**2).
+    params : ndarray
+        Flattened optimized model parameters for all components.
     """
 
-    n_comps = len(peaks.all_maxima)
+    if n_comps is None:
+        n_comps = len(peaks.all_maxima)
 
     # get spectra
-    maxima = np.asarray(peaks.all_maxima) - peaks.left
-    spectra = data[:, maxima].T
-    # using simplisma
-    #spectra, initial_concs = simplisma(data, n_comps, 5)
+    if spectra is None:
+        maxima = np.asarray(peaks.all_maxima) - peaks.left
+        spectra = data[:, maxima].T
+        # using simplisma
+        # spectra, initial_concs = simplisma(data, n_comps, 5)
 
     # Some generally useful variables
     t = np.arange(data.shape[1], dtype=float)
@@ -269,15 +332,11 @@ def fit_peak_model(
         p0 = []
 
         if initial_concs is None:
-            # adjust spectra guess to mean=1
-            #spectra = (spectra.T / np.mean(spectra, axis=1)).T
-            # add peaks and remove their contribution one by one
+            # Build initial guesses by iterative deflation of the data
             residual_data = data.copy()
             for peak_index in range(spectra.shape[0]):
                 # get concentrations guess
-                concentrations, _ = concentrations_from_spectra(
-                    residual_data, spectra[peak_index:]
-                )
+                concentrations, _ = concentrations_from_spectra(residual_data, spectra[peak_index:])
                 # smooth out the concentrations
                 for idx in range(concentrations.shape[0]):
                     concentrations[idx] = savgol_filter(
@@ -285,50 +344,37 @@ def fit_peak_model(
                     )
 
                 # find highest peak
-                component, _ = np.unravel_index(
-                    np.argmax(concentrations), concentrations.shape
-                )
+                component, _ = np.unravel_index(np.argmax(concentrations), concentrations.shape)
 
                 conc = concentrations[component]
 
-                peaks, info = find_peaks(conc, width=2, height=0, rel_height=0.3)
-                if len(peaks) > 0:
+                peaks_loc, info = find_peaks(conc, width=2, height=0, rel_height=0.3)
+                if len(peaks_loc) > 0:
                     idx = np.argmax(info["peak_heights"])
                     height = info["peak_heights"][idx]
-                    mu = peaks[idx]
-                    s1 = peaks[idx] - info["left_ips"][idx]
-                    s2 = info["right_ips"][idx] - peaks[idx]
-
-                #if len(peaks.all_maxima) > 0:
-                #   idx = np.argmax(data[:,np.asarray(peaks.all_maxima) - peaks.left])
-                #    height = np.mean(data[:,idx])
-                #    mu = idx
-                #    s1 = idx
-                #    s2 = peaks.right - peaks.left - idx
+                    mu = peaks_loc[idx]
+                    s1 = peaks_loc[idx] - info["left_ips"][idx]
+                    s2 = info["right_ips"][idx] - peaks_loc[idx]
 
                 # otherwise use moments
                 else:
                     height = np.max(conc)
                     mu = np.sum(conc * t) / (np.sum(conc) + 1e-7)
                     s1 = np.sqrt(
-                        np.sum(conc * (t - mu) ** 2 * (t < mu))
-                        / (np.sum(conc * (t < mu)) + 1e-7)
+                        np.sum(conc * (t - mu) ** 2 * (t < mu)) / (np.sum(conc * (t < mu)) + 1e-7)
                     )
                     s2 = np.sqrt(
-                        np.sum(conc * (t - mu) ** 2 * (t < mu))
-                        / (np.sum(conc * (t < mu)) + 1e-7)
+                        np.sum(conc * (t - mu) ** 2 * (t < mu)) / (np.sum(conc * (t < mu)) + 1e-7)
                     )
 
                 # get the peak parameters
                 params = model.init_guess(height, mu, s1 * 1.4, s2 * 1.4)
                 p0.append(params)
 
-                # substract data accounted for by the peak
-                residual_data -= np.outer(
-                    spectra[component + peak_index], model.val(t, *params)
-                )
+                # subtract data accounted for by the peak
+                residual_data -= np.outer(spectra[component + peak_index], model.val(t, *params))
 
-                # swap remove the spectrum guess
+                # swap/remove the spectrum guess
                 spectra[[peak_index, component + peak_index]] = spectra[
                     [component + peak_index, peak_index]
                 ]
@@ -338,24 +384,22 @@ def fit_peak_model(
 
             for conc in concentrations:
                 # if peak is present use it to get initial parameters
-                peaks, info = find_peaks(conc, width=2, height=0.0, rel_height=0.3)
-                if len(peaks) > 0:
+                peaks_loc, info = find_peaks(conc, width=2, height=0.0, rel_height=0.3)
+                if len(peaks_loc) > 0:
                     idx = np.argmax(info["peak_heights"])
                     height = info["peak_heights"][idx]
-                    mu = peaks[idx]
-                    s1 = peaks[idx] - info["left_ips"][idx]
-                    s2 = info["right_ips"][idx] - peaks[idx]
+                    mu = peaks_loc[idx]
+                    s1 = peaks_loc[idx] - info["left_ips"][idx]
+                    s2 = info["right_ips"][idx] - peaks_loc[idx]
                 # otherwise use moments
                 else:
                     height = np.max(conc)
                     mu = np.sum(conc * t) / (np.sum(conc) + 1e-7)
                     s1 = np.sqrt(
-                        np.sum(conc * (t - mu) ** 2 * (t < mu))
-                        / (np.sum(conc * (t < mu)) + 1e-7)
+                        np.sum(conc * (t - mu) ** 2 * (t < mu)) / (np.sum(conc * (t < mu)) + 1e-7)
                     )
                     s2 = np.sqrt(
-                        np.sum(conc * (t - mu) ** 2 * (t < mu))
-                        / (np.sum(conc * (t < mu)) + 1e-7)
+                        np.sum(conc * (t - mu) ** 2 * (t < mu)) / (np.sum(conc * (t < mu)) + 1e-7)
                     )
 
                 # get initial guess
@@ -369,18 +413,34 @@ def fit_peak_model(
 
         initial_params = np.array(p0).flatten()
 
-    def loss_and_grad(
-            params: NDArray, data: NDArray, spectra: NDArray, t: NDArray
-    ) -> Tuple[float, NDArray]:
-        """Returns MSE and gradient. Would be good to test that this is correct."""
+    def loss_and_grad(params: NDArray, data: NDArray, spectra: NDArray, t: NDArray) -> Tuple[float, NDArray]:
+        """
+    Compute mean squared error and its gradient with respect to flattened parameters.
+
+    Parameters
+    ----------
+    params : NDArray
+        A 1D array of flattened parameters, each representing a parameter in the model.
+    data : NDArray
+        A 1D array of data values corresponding to the model's predictions.
+    spectra : NDArray
+        A 2D array of spectral data points.
+    t : NDArray
+        A 1D array of time points.
+
+    Returns
+    -------
+    mse : float
+        Mean squared error between the model's predictions and the actual data.
+    grad : NDArray
+        Gradient of the mean squared error with respect to each flattened parameter.
+    """
         # Reshape params to [component, param]
         if not adjust_spectra:
             params = params.reshape([n_comps, n_params])
         else:
             params = params.reshape([n_comps, n_params - 1])
-            params = np.concatenate(
-                [np.ones([n_comps, 1], dtype=float), params], axis=1
-            )
+            params = np.concatenate([np.ones([n_comps, 1], dtype=float), params], axis=1)
 
         # Get concentrations [component, time]
         concs = np.array([model.val(t, *p) for p in params])
@@ -401,9 +461,7 @@ def fit_peak_model(
                     "w,pt->pwt", spectra[comp_idx], model.grad(t, *param)
                 )
         else:
-            sTc_grad = np.zeros(
-                [n_comps * (n_params - 1), data.shape[0], data.shape[1]]
-            )
+            sTc_grad = np.zeros([n_comps * (n_params - 1), data.shape[0], data.shape[1]])
             for comp_idx, param in enumerate(params):
                 sTc_grad[
                     comp_idx * (n_params - 1): (comp_idx + 1) * (n_params - 1)
@@ -464,7 +522,7 @@ def fit_peak_model(
 def deconvolve_fixed(data: NDArray, model: PeakModel, relaxe_concs: bool) -> Tuple[
     NDArray, NDArray, float]:
     """
-    Deconvolves data with given number of components. Returns concentration, spectra and MSE
+    Deconvolves data with given number of components. Returns concentration, spectra, and MSE
 
     Parameters
     ----------
@@ -581,14 +639,33 @@ def spectra_from_concentrations(
     return concentrations_from_spectra(data.T, concentrations)
 
 
-import numpy as np
-from scipy.linalg import lstsq, LinAlgWarning
-import warnings
-
-
 def nnls(A, b, maxiter=None, tol=None, l2=0.0):
     """
-    Non-negative least squares solver, adapted from SciPy's nnls
+    Non-negative least squares solver with Tikhonov regularization
+
+    Solves the optimization problem: minimize ||Ax - b||² subject to x ≥ 0
+    with optional L2 regularization for improved numerical stability.
+
+    Parameters:
+        A (np.ndarray): Design matrix of shape (m, n) where m is the number
+                        of observations and n is the number of variables
+        b (np.ndarray): Target vector of shape (m,) containing observed values
+        maxiter (int, optional): Maximum number of iterations for the solver
+                               Defaults to 1000 if not provided
+        tol (float, optional): Tolerance for convergence criteria
+                           Defaults to 1e-6 if not provided
+        l2 (float, optional): L2 regularization parameter (lambda)
+                          Adds λI to the normal equations for regularization
+
+    Returns:
+        np.ndarray: Non-negative solution vector x of shape (n,)
+
+    Notes:
+        - This implementation is adapted from SciPy's nnls with modifications
+          for improved numerical stability and regularization support
+        - The solver uses a modified Gram-Schmidt approach with iterative refinement
+        - L2 regularization helps prevent overfitting in ill-conditioned systems
+        - The solution is guaranteed to be non-negative by construction
     """
     m, n = A.shape
 
