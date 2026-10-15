@@ -99,7 +99,7 @@ plt.show()
 publication in process
 
 ## Licence 
-See License for details
+See License "PolyForm NonCommercial 1.0.0.txt" for details
 
 
 
