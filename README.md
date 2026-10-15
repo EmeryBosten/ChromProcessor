@@ -95,6 +95,11 @@ plt.show()
 <img width="640" height="480" alt="peak_detection" src="https://github.com/user-attachments/assets/e4c2b94c-bd98-46f9-8d2c-6afd1b709c29" />
 <img width="640" height="480" alt="peak_detection_results" src="https://github.com/user-attachments/assets/4018f2f7-a728-44bf-bf4b-96da56a37d21" />
 
+## Citation
+publication in process
+
+## Licence 
+See License for details
 
 
 
