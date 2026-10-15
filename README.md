@@ -1,4 +1,4 @@
-docs/images/logo.png
+<img width="533" height="385" alt="Logo" src="https://github.com/user-attachments/assets/42b8c838-b7df-4a1a-82d9-99a4771b5d4d" />
 
 # chromprocessor
 
