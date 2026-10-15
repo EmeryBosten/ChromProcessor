@@ -21,6 +21,7 @@ Visualize the results
 
 ## 1. Load and initialize chromatogram
 
+'''python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -46,6 +47,7 @@ y = y + noise
 chrom = Chromatogram(y, None, None, None, x, None)
 chrom.remove_blank()
 chrom.from_2D_to_1D()
+'''
 
 ## 2. Process chromatogram
 
