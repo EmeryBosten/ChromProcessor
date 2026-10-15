@@ -1,3 +1,5 @@
+docs/images/logo.png
+
 # chromprocessor
 
 Python tools for chromatogram parsing, preprocessing, peak detection, tracking, and deconvolution.
