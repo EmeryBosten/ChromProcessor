@@ -53,11 +53,15 @@ chrom.from_2D_to_1D()
 
 ```python
 chrom.correct_baseline()
+<img width="640" height="480" alt="baseline_correction" src="https://github.com/user-attachments/assets/e1e61569-5b6a-43eb-93e6-bcd089530a66" />
 chrom.remove_noise()
+<img width="640" height="480" alt="noise_removal" src="https://github.com/user-attachments/assets/110c4c4a-147a-4201-a3ee-6e591e9ada72" />
 chrom.detect_peaks()
+<img width="640" height="480" alt="peak_detection" src="https://github.com/user-attachments/assets/e4c2b94c-bd98-46f9-8d2c-6afd1b709c29" />
+
 ```
 
-## 3. Generate Figures
+## 3. Generate additional Figures
 
 ```python
 plt.rcParams.update({'font.size': 11.5})
@@ -90,9 +94,6 @@ axs[1].plot(chrom.time[:-1],np.diff(chrom.chrom_1D), color="black",linewidth=1)
 plt.show()
 ```
 
-<img width="640" height="480" alt="baseline_correction" src="https://github.com/user-attachments/assets/e1e61569-5b6a-43eb-93e6-bcd089530a66" />
-<img width="640" height="480" alt="noise_removal" src="https://github.com/user-attachments/assets/110c4c4a-147a-4201-a3ee-6e591e9ada72" />
-<img width="640" height="480" alt="peak_detection" src="https://github.com/user-attachments/assets/e4c2b94c-bd98-46f9-8d2c-6afd1b709c29" />
 <img width="640" height="480" alt="peak_detection_results" src="https://github.com/user-attachments/assets/4018f2f7-a728-44bf-bf4b-96da56a37d21" />
 
 ## Citation
