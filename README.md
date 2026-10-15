@@ -30,7 +30,7 @@ from pathlib import Path
 from chromprocessor.classes import Chromatogram
 
 # Load chromatogram
-base_path = Path(r"C:\Users\emery\OneDrive - KU Leuven\Chromatograms\Autoencoder - raw data\ISO")
+base_path = Path(r"./data")
 
 chrom = pd.read_csv(base_path / "MIX_F10.CSV", sep="\t", encoding="utf-16").to_numpy()
 
@@ -51,12 +51,15 @@ chrom.from_2D_to_1D()
 
 ## 2. Process chromatogram
 
+```python
 chrom.correct_baseline()
 chrom.remove_noise()
 chrom.detect_peaks()
+```
 
 ## 3. Generate Figures
 
+```python
 plt.rcParams.update({'font.size': 11.5})
 fig, axs = plt.subplots(3,1)
 axs[0].plot(chrom.time,chrom.chrom_1D,linewidth=2)
@@ -85,6 +88,7 @@ axs[1].plot(chrom.time[:-1],np.diff(chrom.chrom_1D), color="black",linewidth=1)
 #plt.xlabel("Time", fontsize=12.5)
 #plt.ylabel("Absorbance", fontsize=12.5)
 plt.show()
+```
 
 <img width="640" height="480" alt="baseline_correction" src="https://github.com/user-attachments/assets/e1e61569-5b6a-43eb-93e6-bcd089530a66" />
 <img width="640" height="480" alt="noise_removal" src="https://github.com/user-attachments/assets/110c4c4a-147a-4201-a3ee-6e591e9ada72" />
