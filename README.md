@@ -53,10 +53,15 @@ chrom.from_2D_to_1D()
 
 ```python
 chrom.correct_baseline()
+```
 <img width="640" height="480" alt="baseline_correction" src="https://github.com/user-attachments/assets/e1e61569-5b6a-43eb-93e6-bcd089530a66" />
+```python
 chrom.remove_noise()
+```
 <img width="640" height="480" alt="noise_removal" src="https://github.com/user-attachments/assets/110c4c4a-147a-4201-a3ee-6e591e9ada72" />
+```python
 chrom.detect_peaks()
+```
 <img width="640" height="480" alt="peak_detection" src="https://github.com/user-attachments/assets/e4c2b94c-bd98-46f9-8d2c-6afd1b709c29" />
 
 ```
